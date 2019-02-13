@@ -17,3 +17,4 @@ A group of typed definition of AXI4 in Chisel3.
 - Maybe replace `nat` with more light-weighted implementation.
 - Add testbenches.
 - Add some auxiliary functions.
+- Rename signals to make it easier to corporate with ISE, Vivado, etc.'s IP templates.

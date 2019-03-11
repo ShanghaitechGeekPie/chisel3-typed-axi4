@@ -4,8 +4,8 @@ package axi
 import chisel3._
 import chisel3.util._
 
-import nat._
-import bibranch._
+import axi._branch.bibranch._
+import axi._branch.natbranch._
 
 object AxiStream {
   class StrbField extends Axi.FreeWidthOptField
@@ -17,12 +17,12 @@ object AxiStream {
 }
 
 class AxiStreamData[
-  Strb_CFG <: WEAK_NAT[AxiStream.StrbField],
-  Keep_CFG <: WEAK_NAT[AxiStream.KeepField],
-  Last_CFG <: BOOLEAN[AxiStream.LastField],
-  User_CFG <: WEAK_NAT[AxiStream.UserField],
-  Dest_CFG <: WEAK_NAT[AxiStream.DestField],
-  Id_CFG   <: WEAK_NAT[AxiStream.IdField]
+  Strb_CFG <: BR_NAT[AxiStream.StrbField],
+  Keep_CFG <: BR_NAT[AxiStream.KeepField],
+  Last_CFG <: BR_BOOLEAN[AxiStream.LastField],
+  User_CFG <: BR_NAT[AxiStream.UserField],
+  Dest_CFG <: BR_NAT[AxiStream.DestField],
+  Id_CFG   <: BR_NAT[AxiStream.IdField]
 ](
   val dataWidth: Int,
   val strb_cfg: Strb_CFG,
@@ -42,12 +42,12 @@ class AxiStreamData[
 }
 
 class AxiStreamMaster[
-  Strb_CFG <: WEAK_NAT[AxiStream.StrbField],
-  Keep_CFG <: WEAK_NAT[AxiStream.KeepField],
-  Last_CFG <: BOOLEAN[AxiStream.LastField],
-  User_CFG <: WEAK_NAT[AxiStream.UserField],
-  Dest_CFG <: WEAK_NAT[AxiStream.DestField],
-  Id_CFG   <: WEAK_NAT[AxiStream.IdField]
+  Strb_CFG <: BR_NAT[AxiStream.StrbField],
+  Keep_CFG <: BR_NAT[AxiStream.KeepField],
+  Last_CFG <: BR_BOOLEAN[AxiStream.LastField],
+  User_CFG <: BR_NAT[AxiStream.UserField],
+  Dest_CFG <: BR_NAT[AxiStream.DestField],
+  Id_CFG   <: BR_NAT[AxiStream.IdField]
 ](
   val dataWidth: Int,
   val strb_cfg: Strb_CFG,
@@ -82,23 +82,23 @@ object AxiStreamMaster {
   ) = {
     new AxiStreamMaster(
       dataWidth,
-      WEAK_NAT(new AxiStream.StrbField, if(hasStrb){dataWidth / 8}else{0}),
-      WEAK_NAT(new AxiStream.KeepField, if(hasKeep){dataWidth / 8}else{0}),
-      BOOLEAN(new AxiStream.LastField,  hasLast),
-      WEAK_NAT(new AxiStream.UserField, userWidth),
-      WEAK_NAT(new AxiStream.DestField, destWidth),
-      WEAK_NAT(new AxiStream.IdField,   idWidth)
+      BR_NAT(new AxiStream.StrbField, if(hasStrb){dataWidth / 8}else{0}),
+      BR_NAT(new AxiStream.KeepField, if(hasKeep){dataWidth / 8}else{0}),
+      BR_BOOLEAN(new AxiStream.LastField,  hasLast),
+      BR_NAT(new AxiStream.UserField, userWidth),
+      BR_NAT(new AxiStream.DestField, destWidth),
+      BR_NAT(new AxiStream.IdField,   idWidth)
     )
   }
 }
 
 class AxiStreamSlave[
-  Strb_CFG <: WEAK_NAT[AxiStream.StrbField],
-  Keep_CFG <: WEAK_NAT[AxiStream.KeepField],
-  Last_CFG <: BOOLEAN[AxiStream.LastField],
-  User_CFG <: WEAK_NAT[AxiStream.UserField],
-  Dest_CFG <: WEAK_NAT[AxiStream.DestField],
-  Id_CFG   <: WEAK_NAT[AxiStream.IdField]
+  Strb_CFG <: BR_NAT[AxiStream.StrbField],
+  Keep_CFG <: BR_NAT[AxiStream.KeepField],
+  Last_CFG <: BR_BOOLEAN[AxiStream.LastField],
+  User_CFG <: BR_NAT[AxiStream.UserField],
+  Dest_CFG <: BR_NAT[AxiStream.DestField],
+  Id_CFG   <: BR_NAT[AxiStream.IdField]
 ](
   val dataWidth: Int,
   val strb_cfg: Strb_CFG,
@@ -133,12 +133,12 @@ object AxiStreamSlave {
   ) = {
     new AxiStreamSlave(
       dataWidth,
-      WEAK_NAT(new AxiStream.StrbField, if(hasStrb){dataWidth / 8}else{0}),
-      WEAK_NAT(new AxiStream.KeepField, if(hasKeep){dataWidth / 8}else{0}),
-      BOOLEAN(new AxiStream.LastField,  hasLast),
-      WEAK_NAT(new AxiStream.UserField, userWidth),
-      WEAK_NAT(new AxiStream.DestField, destWidth),
-      WEAK_NAT(new AxiStream.IdField,   idWidth)
+      BR_NAT(new AxiStream.StrbField, if(hasStrb){dataWidth / 8}else{0}),
+      BR_NAT(new AxiStream.KeepField, if(hasKeep){dataWidth / 8}else{0}),
+      BR_BOOLEAN(new AxiStream.LastField,  hasLast),
+      BR_NAT(new AxiStream.UserField, userWidth),
+      BR_NAT(new AxiStream.DestField, destWidth),
+      BR_NAT(new AxiStream.IdField,   idWidth)
     )
   }
 }

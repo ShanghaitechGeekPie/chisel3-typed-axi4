@@ -4,8 +4,8 @@ package axi
 import chisel3._
 import chisel3.util._
 
-import bibranch._
-import nat._
+import axi._branch.bibranch._
+import axi._branch.natbranch._
 
 object Axi {
   abstract class BoolOptField() extends BIBRANCH {
@@ -20,7 +20,7 @@ object Axi {
     type FALSE_T = Null
     val instantiate_false_branch = () => null
   }
-  abstract class FreeWidthOptField extends WEAK_FINBRANCH {
+  abstract class FreeWidthOptField extends NATBRANCH {
     type ZERO_T = Null
     val instantiate_zero_branch = () => null
     type SUCC_T = UInt
@@ -36,13 +36,13 @@ object Axi {
 }
 
 class AxiAddr[
-  Id_CFG     <: WEAK_NAT[Axi.IdField],
-  Cache_CFG  <: BOOLEAN[Axi.CacheField],
-  Lock_CFG   <: BOOLEAN[Axi.LockField],
-  Prot_CFG   <: BOOLEAN[Axi.ProtField],
-  Qos_CFG    <: BOOLEAN[Axi.QosField],
-  Region_CFG <: BOOLEAN[Axi.RegionField],
-  User_CFG   <: WEAK_NAT[Axi.UserField]
+  Id_CFG     <: BR_NAT[Axi.IdField],
+  Cache_CFG  <: BR_BOOLEAN[Axi.CacheField],
+  Lock_CFG   <: BR_BOOLEAN[Axi.LockField],
+  Prot_CFG   <: BR_BOOLEAN[Axi.ProtField],
+  Qos_CFG    <: BR_BOOLEAN[Axi.QosField],
+  Region_CFG <: BR_BOOLEAN[Axi.RegionField],
+  User_CFG   <: BR_NAT[Axi.UserField]
 ](
   val addrWidth:  Int,
   val id_cfg:     Id_CFG,
@@ -67,7 +67,7 @@ class AxiAddr[
 }
 
 abstract class AxiData[
-  User_CFG <: WEAK_NAT[Axi.UserField]
+  User_CFG <: BR_NAT[Axi.UserField]
 ](val dataWidth: Int, val user_cfg: User_CFG) extends Bundle {
   val data = UInt(dataWidth.W)
   val last = Bool()
@@ -75,8 +75,8 @@ abstract class AxiData[
 }
 
 class AxiReadData[
-  User_CFG <: WEAK_NAT[Axi.UserField],
-  Id_CFG   <: WEAK_NAT[Axi.IdField]
+  User_CFG <: BR_NAT[Axi.UserField],
+  Id_CFG   <: BR_NAT[Axi.IdField]
 ](
   dataWidth:  Int,
   user_cfg:   User_CFG,
@@ -87,7 +87,7 @@ class AxiReadData[
 }
 
 class AxiWriteData[
-  User_CFG <: WEAK_NAT[Axi.UserField]
+  User_CFG <: BR_NAT[Axi.UserField]
 ](
   dataWidth: Int, user_cfg: User_CFG
 ) extends AxiData(dataWidth, user_cfg) {
@@ -95,8 +95,8 @@ class AxiWriteData[
 }
 
 class AxiWriteResp[
-  Id_CFG   <: WEAK_NAT[Axi.IdField],
-  User_CFG <: WEAK_NAT[Axi.UserField]
+  Id_CFG   <: BR_NAT[Axi.IdField],
+  User_CFG <: BR_NAT[Axi.UserField]
 ](
   val id_cfg:   Id_CFG,
   val user_cfg: User_CFG
@@ -107,17 +107,17 @@ class AxiWriteResp[
 }
 
 class AxiMaster[
-  Id_CFG     <: WEAK_NAT[Axi.IdField],
-  Cache_CFG  <: BOOLEAN[Axi.CacheField],
-  Lock_CFG   <: BOOLEAN[Axi.LockField],
-  Prot_CFG   <: BOOLEAN[Axi.ProtField],
-  Qos_CFG    <: BOOLEAN[Axi.QosField],
-  Region_CFG <: BOOLEAN[Axi.RegionField],
-  arUser_CFG <: WEAK_NAT[Axi.UserField],
-  rUser_CFG  <: WEAK_NAT[Axi.UserField],
-  awUser_CFG <: WEAK_NAT[Axi.UserField],
-  wUser_CFG  <: WEAK_NAT[Axi.UserField],
-  bUser_CFG  <: WEAK_NAT[Axi.UserField]
+  Id_CFG     <: BR_NAT[Axi.IdField],
+  Cache_CFG  <: BR_BOOLEAN[Axi.CacheField],
+  Lock_CFG   <: BR_BOOLEAN[Axi.LockField],
+  Prot_CFG   <: BR_BOOLEAN[Axi.ProtField],
+  Qos_CFG    <: BR_BOOLEAN[Axi.QosField],
+  Region_CFG <: BR_BOOLEAN[Axi.RegionField],
+  arUser_CFG <: BR_NAT[Axi.UserField],
+  rUser_CFG  <: BR_NAT[Axi.UserField],
+  awUser_CFG <: BR_NAT[Axi.UserField],
+  wUser_CFG  <: BR_NAT[Axi.UserField],
+  bUser_CFG  <: BR_NAT[Axi.UserField]
 ](
   val addrWidth:  Int,
   val dataWidth:  Int,
@@ -180,17 +180,17 @@ class AxiMaster[
 
 object AxiMaster {
   def apply[
-    Id_CFG     <: WEAK_NAT[Axi.IdField],
-    Cache_CFG  <: BOOLEAN[Axi.CacheField],
-    Lock_CFG   <: BOOLEAN[Axi.LockField],
-    Prot_CFG   <: BOOLEAN[Axi.ProtField],
-    Qos_CFG    <: BOOLEAN[Axi.QosField],
-    Region_CFG <: BOOLEAN[Axi.RegionField],
-    arUser_CFG <: WEAK_NAT[Axi.UserField],
-    rUser_CFG  <: WEAK_NAT[Axi.UserField],
-    awUser_CFG <: WEAK_NAT[Axi.UserField],
-    wUser_CFG  <: WEAK_NAT[Axi.UserField],
-    bUser_CFG  <: WEAK_NAT[Axi.UserField]
+    Id_CFG     <: BR_NAT[Axi.IdField],
+    Cache_CFG  <: BR_BOOLEAN[Axi.CacheField],
+    Lock_CFG   <: BR_BOOLEAN[Axi.LockField],
+    Prot_CFG   <: BR_BOOLEAN[Axi.ProtField],
+    Qos_CFG    <: BR_BOOLEAN[Axi.QosField],
+    Region_CFG <: BR_BOOLEAN[Axi.RegionField],
+    arUser_CFG <: BR_NAT[Axi.UserField],
+    rUser_CFG  <: BR_NAT[Axi.UserField],
+    awUser_CFG <: BR_NAT[Axi.UserField],
+    wUser_CFG  <: BR_NAT[Axi.UserField],
+    bUser_CFG  <: BR_NAT[Axi.UserField]
   ](
     addrWidth:   Int,
     dataWidth:   Int,
@@ -209,33 +209,33 @@ object AxiMaster {
     new AxiMaster(
       addrWidth,
       dataWidth,
-      BOOLEAN(new Axi.CacheField,  hasCache),
-      BOOLEAN(new Axi.LockField,   hasLock),
-      BOOLEAN(new Axi.ProtField,   hasProt),
-      BOOLEAN(new Axi.QosField,    hasQos),
-      BOOLEAN(new Axi.RegionField, hasRegion),
-      WEAK_NAT(new Axi.IdField,    idWidth),
-      WEAK_NAT(new Axi.UserField,  arUserWidth),
-      WEAK_NAT(new Axi.UserField,  rUserWidth),
-      WEAK_NAT(new Axi.UserField,  awUserWidth),
-      WEAK_NAT(new Axi.UserField,  wUserWidth),
-      WEAK_NAT(new Axi.UserField,  bUserWidth)
+      BR_BOOLEAN(new Axi.CacheField,  hasCache),
+      BR_BOOLEAN(new Axi.LockField,   hasLock),
+      BR_BOOLEAN(new Axi.ProtField,   hasProt),
+      BR_BOOLEAN(new Axi.QosField,    hasQos),
+      BR_BOOLEAN(new Axi.RegionField, hasRegion),
+      BR_NAT(new Axi.IdField,    idWidth),
+      BR_NAT(new Axi.UserField,  arUserWidth),
+      BR_NAT(new Axi.UserField,  rUserWidth),
+      BR_NAT(new Axi.UserField,  awUserWidth),
+      BR_NAT(new Axi.UserField,  wUserWidth),
+      BR_NAT(new Axi.UserField,  bUserWidth)
     )
   }
 }
 
 class AxiSlave[
-  Id_CFG     <: WEAK_NAT[Axi.IdField],
-  Cache_CFG  <: BOOLEAN[Axi.CacheField],
-  Lock_CFG   <: BOOLEAN[Axi.LockField],
-  Prot_CFG   <: BOOLEAN[Axi.ProtField],
-  Qos_CFG    <: BOOLEAN[Axi.QosField],
-  Region_CFG <: BOOLEAN[Axi.RegionField],
-  arUser_CFG <: WEAK_NAT[Axi.UserField],
-  rUser_CFG  <: WEAK_NAT[Axi.UserField],
-  awUser_CFG <: WEAK_NAT[Axi.UserField],
-  wUser_CFG  <: WEAK_NAT[Axi.UserField],
-  bUser_CFG  <: WEAK_NAT[Axi.UserField]
+  Id_CFG     <: BR_NAT[Axi.IdField],
+  Cache_CFG  <: BR_BOOLEAN[Axi.CacheField],
+  Lock_CFG   <: BR_BOOLEAN[Axi.LockField],
+  Prot_CFG   <: BR_BOOLEAN[Axi.ProtField],
+  Qos_CFG    <: BR_BOOLEAN[Axi.QosField],
+  Region_CFG <: BR_BOOLEAN[Axi.RegionField],
+  arUser_CFG <: BR_NAT[Axi.UserField],
+  rUser_CFG  <: BR_NAT[Axi.UserField],
+  awUser_CFG <: BR_NAT[Axi.UserField],
+  wUser_CFG  <: BR_NAT[Axi.UserField],
+  bUser_CFG  <: BR_NAT[Axi.UserField]
 ](
   val addrWidth:  Int,
   val dataWidth:  Int,
@@ -298,17 +298,17 @@ class AxiSlave[
 
 object AxiSlave {
   def apply[
-    Id_CFG     <: WEAK_NAT[Axi.IdField],
-    Cache_CFG  <: BOOLEAN[Axi.CacheField],
-    Lock_CFG   <: BOOLEAN[Axi.LockField],
-    Prot_CFG   <: BOOLEAN[Axi.ProtField],
-    Qos_CFG    <: BOOLEAN[Axi.QosField],
-    Region_CFG <: BOOLEAN[Axi.RegionField],
-    arUser_CFG <: WEAK_NAT[Axi.UserField],
-    rUser_CFG  <: WEAK_NAT[Axi.UserField],
-    awUser_CFG <: WEAK_NAT[Axi.UserField],
-    wUser_CFG  <: WEAK_NAT[Axi.UserField],
-    bUser_CFG  <: WEAK_NAT[Axi.UserField]
+    Id_CFG     <: BR_NAT[Axi.IdField],
+    Cache_CFG  <: BR_BOOLEAN[Axi.CacheField],
+    Lock_CFG   <: BR_BOOLEAN[Axi.LockField],
+    Prot_CFG   <: BR_BOOLEAN[Axi.ProtField],
+    Qos_CFG    <: BR_BOOLEAN[Axi.QosField],
+    Region_CFG <: BR_BOOLEAN[Axi.RegionField],
+    arUser_CFG <: BR_NAT[Axi.UserField],
+    rUser_CFG  <: BR_NAT[Axi.UserField],
+    awUser_CFG <: BR_NAT[Axi.UserField],
+    wUser_CFG  <: BR_NAT[Axi.UserField],
+    bUser_CFG  <: BR_NAT[Axi.UserField]
   ](
     addrWidth:   Int,
     dataWidth:   Int,
@@ -327,17 +327,17 @@ object AxiSlave {
     new AxiSlave(
       addrWidth,
       dataWidth,
-      BOOLEAN(new Axi.CacheField,  hasCache),
-      BOOLEAN(new Axi.LockField,   hasLock),
-      BOOLEAN(new Axi.ProtField,   hasProt),
-      BOOLEAN(new Axi.QosField,    hasQos),
-      BOOLEAN(new Axi.RegionField, hasRegion),
-      WEAK_NAT(new Axi.IdField,    idWidth),
-      WEAK_NAT(new Axi.UserField,  arUserWidth),
-      WEAK_NAT(new Axi.UserField,  rUserWidth),
-      WEAK_NAT(new Axi.UserField,  awUserWidth),
-      WEAK_NAT(new Axi.UserField,  wUserWidth),
-      WEAK_NAT(new Axi.UserField,  bUserWidth)
+      BR_BOOLEAN(new Axi.CacheField,  hasCache),
+      BR_BOOLEAN(new Axi.LockField,   hasLock),
+      BR_BOOLEAN(new Axi.ProtField,   hasProt),
+      BR_BOOLEAN(new Axi.QosField,    hasQos),
+      BR_BOOLEAN(new Axi.RegionField, hasRegion),
+      BR_NAT(new Axi.IdField,    idWidth),
+      BR_NAT(new Axi.UserField,  arUserWidth),
+      BR_NAT(new Axi.UserField,  rUserWidth),
+      BR_NAT(new Axi.UserField,  awUserWidth),
+      BR_NAT(new Axi.UserField,  wUserWidth),
+      BR_NAT(new Axi.UserField,  bUserWidth)
     )
   }
 }

@@ -3,18 +3,21 @@ Chisel3 Typed-AXI4
 
 ## What it is?
 
-A group of typed definition of AXI4 in Chisel3.
+A group of typed definition of a subset of AXI4 written in Chisel3.
 
 ## Disadvantages?
 
 - Some bad names.
-- Over use of `nat`.
 - Only definition of the interface family, i.e. no auxiliary functions so far.
+
+## Advantages?
+
+- Clean output, i.e.optional wires won't appear in the generated codes unless declared explicitly.
+- The existence and width of optional wires is shown in type.
 
 ## TODO
 
-- Rename the util classes.
-- Maybe replace `nat` with more light-weighted implementation.
+- Make data field generic.
 - Add testbenches.
 - Add some auxiliary functions.
-- Rename signals to make it easier to corporate with ISE, Vivado, etc.'s IP templates.
+- Rename signals to make it easier to corporate with vendors' IP templates.

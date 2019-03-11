@@ -1,5 +1,5 @@
 
-package nat
+package axi._branch.natbranch
 
 sealed trait nat {
   val value: Int

@@ -4,8 +4,8 @@ package axi
 import chisel3._
 import chisel3.util._
 
-import nat._
-import bibranch._
+import axi._branch.bibranch._
+import axi._branch.natbranch._
 
 object AxiLite {
   class ProtField extends Axi.FixedWidthOptField(3)
@@ -13,7 +13,7 @@ object AxiLite {
 }
 
 class AxiLiteAddr[
-  Prot_CFG <: BOOLEAN[AxiLite.ProtField]
+  Prot_CFG <: BR_BOOLEAN[AxiLite.ProtField]
 ](
   val addrWidth: Int,
   val prot_cfg:  Prot_CFG
@@ -32,7 +32,7 @@ class AxiLiteReadData(dataWidth: Int) extends AxiLiteData(dataWidth) {
 }
 
 class AxiLiteWriteData[
-  Strb_CFG <: WEAK_NAT[AxiLite.StrbField]
+  Strb_CFG <: BR_NAT[AxiLite.StrbField]
 ](
   dataWidth:    Int,
   val strb_cfg: Strb_CFG
@@ -45,8 +45,8 @@ class AxiLiteWriteResp extends Bundle {
 }
 
 class AxiLiteMaster[
-  Prot_CFG <: BOOLEAN[AxiLite.ProtField],
-  Strb_CFG <: WEAK_NAT[AxiLite.StrbField]
+  Prot_CFG <: BR_BOOLEAN[AxiLite.ProtField],
+  Strb_CFG <: BR_NAT[AxiLite.StrbField]
 ](
   val addrWidth: Int,
   val dataWidth: Int,
@@ -83,8 +83,8 @@ class AxiLiteMaster[
 
 object AxiLiteMaster {
   def apply[
-    Prot_CFG <: BOOLEAN[AxiLite.ProtField],
-    Strb_CFG <: WEAK_NAT[AxiLite.StrbField]
+    Prot_CFG <: BR_BOOLEAN[AxiLite.ProtField],
+    Strb_CFG <: BR_NAT[AxiLite.StrbField]
   ](
     addrWidth: Int,
     dataWidth: Int,
@@ -94,15 +94,15 @@ object AxiLiteMaster {
     new AxiLiteMaster(
       addrWidth,
       dataWidth,
-      BOOLEAN(new AxiLite.ProtField,  hasProt),
-      WEAK_NAT(new AxiLite.StrbField, if(hasStrb){dataWidth / 8}else{0})
+      BR_BOOLEAN(new AxiLite.ProtField,  hasProt),
+      BR_NAT(new AxiLite.StrbField, if(hasStrb){dataWidth / 8}else{0})
     )
   }
 }
 
 class AxiLiteSlave[
-  Prot_CFG <: BOOLEAN[AxiLite.ProtField],
-  Strb_CFG <: WEAK_NAT[AxiLite.StrbField]
+  Prot_CFG <: BR_BOOLEAN[AxiLite.ProtField],
+  Strb_CFG <: BR_NAT[AxiLite.StrbField]
 ](
   val addrWidth: Int,
   val dataWidth: Int,
@@ -139,8 +139,8 @@ class AxiLiteSlave[
 
 object AxiLiteSlave {
   def apply[
-    Prot_CFG <: BOOLEAN[AxiLite.ProtField],
-    Strb_CFG <: WEAK_NAT[AxiLite.StrbField]
+    Prot_CFG <: BR_BOOLEAN[AxiLite.ProtField],
+    Strb_CFG <: BR_NAT[AxiLite.StrbField]
   ](
     addrWidth: Int,
     dataWidth: Int,
@@ -150,8 +150,8 @@ object AxiLiteSlave {
     new AxiLiteSlave(
       addrWidth,
       dataWidth,
-      BOOLEAN(new AxiLite.ProtField,  hasProt),
-      WEAK_NAT(new AxiLite.StrbField, if(hasStrb){dataWidth / 8}else{0})
+      BR_BOOLEAN(new AxiLite.ProtField,  hasProt),
+      BR_NAT(new AxiLite.StrbField, if(hasStrb){dataWidth / 8}else{0})
     )
   }
 }

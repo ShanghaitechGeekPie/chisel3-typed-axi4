@@ -26,6 +26,8 @@ def javacOptionsVersion(scalaVersion: String): Seq[String] = {
   }
 }
 
+ThisBuild / organization := "fpga.ShanghaiTechGeekPie"
+
 name := "chisel3-typed-axi4"
 
 version := "3.1.1"
@@ -42,7 +44,7 @@ resolvers ++= Seq(
 // Provide a managed dependency on X if -DXVersion="" is supplied on the command line.
 val defaultVersions = Map(
   "chisel3" -> "3.1.+",
-  "chisel-iotesters" -> "1.2.5+"
+  "chisel-iotesters" -> "[1.2.5,1.3-SNAPSHOT["
   )
 
 libraryDependencies ++= Seq("chisel3","chisel-iotesters").map {

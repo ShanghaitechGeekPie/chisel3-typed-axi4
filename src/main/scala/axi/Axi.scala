@@ -133,7 +133,7 @@ class AxiMaster[
   val wuser_cfg:  wUser_CFG,
   val buser_cfg:  bUser_CFG
 ) extends Bundle {
-  val readAddr = Flipped(Decoupled(
+  val readAddr = Decoupled(
     new AxiAddr(
       addrWidth,
       id_cfg,
@@ -144,7 +144,7 @@ class AxiMaster[
       region_cfg,
       aruser_cfg
     )
-  ))
+  )
   val writeAddr = Decoupled(
     new AxiAddr(
       addrWidth,
@@ -157,25 +157,25 @@ class AxiMaster[
       awuser_cfg
     )
   )
-  val readData = Decoupled(
+  val readData = Flipped(Decoupled(
     new AxiReadData(
       dataWidth,
       ruser_cfg,
       id_cfg
     )
-  )
+  ))
   val writeData = Flipped(Decoupled(
     new AxiWriteData(
       dataWidth,
       wuser_cfg
     )
   ))
-  val writeResp = Decoupled(
+  val writeResp = Flipped(Decoupled(
     new AxiWriteResp(
       id_cfg,
       buser_cfg
     )
-  )
+  ))
 }
 
 object AxiMaster {
@@ -251,7 +251,7 @@ class AxiSlave[
   val wuser_cfg:  wUser_CFG,
   val buser_cfg:  bUser_CFG
 ) extends Bundle {
-  val readAddr = Decoupled(
+  val readAddr = Flipped(Decoupled(
     new AxiAddr(
       addrWidth,
       id_cfg,
@@ -262,7 +262,7 @@ class AxiSlave[
       region_cfg,
       aruser_cfg
     )
-  )
+  ))
   val writeAddr = Flipped(Decoupled(
     new AxiAddr(
       addrWidth,
@@ -275,25 +275,25 @@ class AxiSlave[
       awuser_cfg
     )
   ))
-  val readData = Flipped(Decoupled(
+  val readData = Decoupled(
     new AxiReadData(
       dataWidth,
       ruser_cfg,
       id_cfg
     )
-  ))
-  val writeData = Decoupled(
+  )
+  val writeData = Flipped(Decoupled(
     new AxiWriteData(
       dataWidth,
       wuser_cfg
     )
-  )
-  val writeResp = Flipped(Decoupled(
+  ))
+  val writeResp = Decoupled(
     new AxiWriteResp(
       id_cfg,
       buser_cfg
     )
-  ))
+  )
 }
 
 object AxiSlave {

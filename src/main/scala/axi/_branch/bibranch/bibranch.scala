@@ -22,7 +22,7 @@ case class BR_TRUE[BB <: BIBRANCH](bb: BB) extends BR_BOOLEAN[BB](bb) {
 }
 
 case class BR_FALSE[BB <: BIBRANCH](bb: BB) extends BR_BOOLEAN[BB](bb) {
-  val value = true
+  val value = false
   type T = bb.FALSE_T
   val instantiate: () => T = () => bb.instantiate_false_branch()
 }

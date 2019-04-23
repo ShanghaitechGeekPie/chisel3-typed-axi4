@@ -164,12 +164,12 @@ class AxiMaster[
       id_cfg
     )
   ))
-  val writeData = Flipped(Decoupled(
+  val writeData = Decoupled(
     new AxiWriteData(
       dataWidth,
       wuser_cfg
     )
-  ))
+  )
   val writeResp = Flipped(Decoupled(
     new AxiWriteResp(
       id_cfg,

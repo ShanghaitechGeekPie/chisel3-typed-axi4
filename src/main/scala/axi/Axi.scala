@@ -66,6 +66,38 @@ class AxiAddr[
   val user   = user_cfg.instantiate()
 }
 
+object AxiAddr {
+  def apply[
+    Id_CFG     <: BR_NAT[Axi.IdField],
+    Cache_CFG  <: BR_BOOLEAN[Axi.CacheField],
+    Lock_CFG   <: BR_BOOLEAN[Axi.LockField],
+    Prot_CFG   <: BR_BOOLEAN[Axi.ProtField],
+    Qos_CFG    <: BR_BOOLEAN[Axi.QosField],
+    Region_CFG <: BR_BOOLEAN[Axi.RegionField],
+    User_CFG   <: BR_NAT[Axi.UserField]
+  ](
+    addrWidth:   Int,
+    hasCache:    Boolean = false,
+    hasLock:     Boolean = false,
+    hasProt:     Boolean = false,
+    hasQos:      Boolean = false,
+    hasRegion:   Boolean = false,
+    idWidth:     Int = 0,
+    userWidth: Int = 0
+  ) = {
+    new AxiAddr(
+      addrWidth,
+      BR_NAT(new Axi.IdField, idWidth),
+      BR_BOOLEAN(new Axi.CacheField,  hasCache),
+      BR_BOOLEAN(new Axi.LockField,   hasLock),
+      BR_BOOLEAN(new Axi.ProtField,   hasProt),
+      BR_BOOLEAN(new Axi.QosField,    hasQos),
+      BR_BOOLEAN(new Axi.RegionField, hasRegion),
+      BR_NAT(new Axi.UserField, userWidth)
+    )
+  }
+}
+
 abstract class AxiData[
   User_CFG <: BR_NAT[Axi.UserField]
 ](val dataWidth: Int, val user_cfg: User_CFG) extends Bundle {
@@ -86,12 +118,43 @@ class AxiReadData[
   val resp = UInt(2.W)
 }
 
+object AxiReadData {
+  def apply[
+    Id_CFG     <: BR_NAT[Axi.IdField],
+    User_CFG <: BR_NAT[Axi.UserField]
+  ](
+    dataWidth:   Int,
+    idWidth:     Int = 0,
+    userWidth: Int = 0
+  ) = {
+    new AxiReadData(
+      dataWidth,
+      BR_NAT(new Axi.UserField, userWidth),
+      BR_NAT(new Axi.IdField, idWidth)
+    )
+  }
+}
+
 class AxiWriteData[
   User_CFG <: BR_NAT[Axi.UserField]
 ](
   dataWidth: Int, user_cfg: User_CFG
 ) extends AxiData(dataWidth, user_cfg) {
   val strb = UInt((dataWidth / 8).W)
+}
+
+object AxiWriteData {
+  def apply[
+    User_CFG <: BR_NAT[Axi.UserField]
+  ](
+    dataWidth: Int,
+    userWidth: Int = 0
+  ) = {
+    new AxiWriteData(
+      dataWidth,
+      BR_NAT(new Axi.UserField, userWidth)
+    )
+  }
 }
 
 class AxiWriteResp[
@@ -104,6 +167,21 @@ class AxiWriteResp[
   val id   = id_cfg.instantiate()
   val resp = UInt(2.W)
   val user = user_cfg.instantiate()
+}
+
+object AxiWriteResp {
+  def apply[
+    Id_CFG     <: BR_NAT[Axi.IdField],
+    user_CFG  <: BR_NAT[Axi.UserField]
+  ](
+    idWidth:     Int = 0,
+    userWidth: Int = 0
+  ) = {
+    new AxiWriteResp(
+      BR_NAT(new Axi.IdField,    idWidth),
+      BR_NAT(new Axi.UserField,  userWidth)
+    )
+  }
 }
 
 class AxiMaster[
